@@ -30,8 +30,10 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         if (target == null) return;
-        HandleRotation();
         HandleZoom();
+        HandleRotation();
+        //Update position consistently
+        transform.position = target.position - transform.forward * currentDistance;
     }
 
     void HandleRotation()

@@ -2,12 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     public float speed = 2f;
     public float rotationSpeed = 10f;
     public Animator an;
     public Transform camera;
+
+    private CharacterController controller;
+
+    void Start()
+    {
+        controller = GetComponent<CharacterController>();
+    }
 
     void Update()
     {
@@ -19,16 +27,15 @@ public class PlayerController : MonoBehaviour
 
         if (inputDirection.magnitude > 0.1f)
         {
-            // Convert input direction relative to camera
+            // Get direction relative to camera
             Vector3 moveDirection = camera.TransformDirection(inputDirection);
             moveDirection.y = 0f;
             moveDirection.Normalize();
 
-            // Move the character in world space
-            transform.position += moveDirection * speed * Time.deltaTime;
+            // Move using CharacterController
+            controller.SimpleMove(moveDirection * speed);
 
-            // Apply an offset rotation (-90° here) so the model faces correctly.
-            // Adjust the angle if your model requires a different offset.
+            // Rotate character to face movement direction (adjust offset if needed)
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection) * Quaternion.Euler(0, -90, 0);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
