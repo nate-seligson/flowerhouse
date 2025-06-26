@@ -7,14 +7,21 @@ public class HeadController : MonoBehaviour
     // Start is called before the first frame update
     public MultiAimConstraint multiAimConstraint;
     public GameObject target;
+
+    public GameObject headreset;
+
+    public Vector3 offset;
+    Quaternion initialRotation;
+    void Start()
+    {
+        initialRotation = multiAimConstraint.data.constrainedObject.transform.rotation;
+    }
     public void TurnPlayerHead(Vector3 position)
     {
-        multiAimConstraint.gameObject.SetActive(true);
-        target.transform.position = position;
+        target.transform.position = Vector3.MoveTowards(target.transform.position, position, 0.05f);
     }
     public void Reset()
     {
-        multiAimConstraint.gameObject.SetActive(false);
-        multiAimConstraint.data.constrainedObject.transform.rotation = Quaternion.identity;
+        target.transform.position = Vector3.MoveTowards(target.transform.position, headreset.transform.position, 0.05f);
     }
 }

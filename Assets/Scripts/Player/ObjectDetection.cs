@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class ObjectDetection : MonoBehaviour
 {
-    //head move target
-    public GameObject target;
     public float radius = 15f;
 
     float minDistance;
 
     Collider[] hits;
 
-    Collider closestCollider = null;
+    Collider closestCollider;
+    HeadController headController;
     void Start()
     {
         minDistance = radius; // initializer   
+        headController = GetComponent<HeadController>();
     }
     void FixedUpdate()
     {
@@ -44,16 +44,11 @@ public class ObjectDetection : MonoBehaviour
     {
         if (closestCollider != null)
         {
-            TurnPlayerHead(closestCollider.transform.position);
+            headController.TurnPlayerHead(closestCollider.transform.position);
         }
         else
         {
-            TurnPlayerHead(transform.position);
+            headController.Reset();
         }
-    }
-    //moves player head turn target to desired position
-    void TurnPlayerHead(Vector3 position)
-    {
-        target.transform.position = position;
     }
 }
