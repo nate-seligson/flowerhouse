@@ -38,14 +38,21 @@ public class CameraController : MonoBehaviour
 
     void HandleRotation()
     {
-            float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
-            float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed;
+        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
+        float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed;
 
-            // Rotate horizontally around the target's up axis
-            transform.RotateAround(target.position, Vector3.up, mouseX);
-            
-            // Rotate vertically around the camera's right axis
-            transform.RotateAround(target.position, transform.right, -mouseY);
+        // Rotate horizontally around the target's up axis
+        transform.RotateAround(target.position, Vector3.up, mouseX);
+
+        // Rotate vertically around the camera's right axis
+        transform.RotateAround(target.position, transform.right, -mouseY);
+        Vector3 angles = transform.eulerAngles;
+
+        float normalized_angle = angles.x;
+
+        if (normalized_angle > 180) normalized_angle -= 360;
+        transform.eulerAngles = new Vector3(Mathf.Clamp(normalized_angle, -60, 60), angles.y, 0); // 90 makes weird behavior smh rotations
+
     }
 
     void HandleZoom()

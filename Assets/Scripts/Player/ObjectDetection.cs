@@ -11,7 +11,7 @@ public class ObjectDetection : MonoBehaviour
 
     Collider[] hits;
 
-    Collider closestCollider;
+    public Collider closestCollider;
     HeadController headController;
     void Start()
     {

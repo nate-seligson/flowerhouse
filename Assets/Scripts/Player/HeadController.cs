@@ -18,10 +18,12 @@ public class HeadController : MonoBehaviour
     }
     public void TurnPlayerHead(Vector3 position)
     {
+        multiAimConstraint.weight = 1;
         target.transform.position = Vector3.MoveTowards(target.transform.position, position, 0.05f);
     }
     public void Reset()
     {
         target.transform.position = Vector3.MoveTowards(target.transform.position, headreset.transform.position, 0.05f);
+        if (Vector3.Distance(target.transform.position, headreset.transform.position) < 0.1f) multiAimConstraint.weight = 0;
     }
 }

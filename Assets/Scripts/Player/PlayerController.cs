@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     public float speed = 2f;
@@ -10,11 +10,13 @@ public class PlayerController : MonoBehaviour
     public Animator an;
     public Transform camera;
 
-    private CharacterController controller;
+    private Rigidbody rb;
+    private Vector3 moveDirection;
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true; // Prevent rigidbody from tipping over
     }
 
     void Update()
@@ -28,16 +30,28 @@ public class PlayerController : MonoBehaviour
         if (inputDirection.magnitude > 0.1f)
         {
             // Get direction relative to camera
-            Vector3 moveDirection = camera.TransformDirection(inputDirection);
+            moveDirection = camera.TransformDirection(inputDirection);
             moveDirection.y = 0f;
             moveDirection.Normalize();
+        }
+        else
+        {
+            moveDirection = Vector3.zero;
+        }
+    }
 
-            // Move using CharacterController
-            controller.SimpleMove(moveDirection * speed);
+    void FixedUpdate()
+    {
+        if (moveDirection != Vector3.zero)
+        {
+            // Move
+            Vector3 targetPosition = rb.position + moveDirection * speed * Time.fixedDeltaTime;
+            rb.MovePosition(targetPosition);
 
-            // Rotate character to face movement direction (adjust offset if needed)
+            // Rotate
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection) * Quaternion.Euler(0, -90, 0);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Quaternion smoothedRotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+            rb.MoveRotation(smoothedRotation);
         }
     }
 }
