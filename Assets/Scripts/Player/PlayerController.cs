@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
+    public static GameObject player;
     public float speed = 2f;
     public float rotationSpeed = 10f;
     public Animator an;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // Prevent rigidbody from tipping over
+        player = gameObject;
     }
 
     void Update()

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - wall
   - pickup
+  - desk
+  - standspot
+  - door
   layers:
   - Default
   - TransparentFX

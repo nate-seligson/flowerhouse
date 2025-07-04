@@ -3,9 +3,9 @@ using UnityEngine;
 public class Plant : MonoBehaviour
 {
     public float lifetime = 5f;
-    private float timer = 0f;
+    public float timer = 0f;
 
-    private bool dead = false;
+    public bool dead = false;
     private Material mat;
 
     void Start()
