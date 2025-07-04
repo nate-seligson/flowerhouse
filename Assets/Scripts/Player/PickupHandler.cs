@@ -5,7 +5,7 @@ using UnityEngine;
 public class PickupHandler : MonoBehaviour
 {
     ObjectDetection objectDetector;
-    GameObject held_object;
+    public static GameObject held_object;
     public float throw_amt = 50;
     public Transform holdspot;
     GameObject just_held; // to stop accidental pickup
@@ -33,6 +33,10 @@ public class PickupHandler : MonoBehaviour
         //if holding something
         else
         {
+            if (Input.GetKeyDown(KeyCode.F) && held_object.TryGetComponent<WateringCan>(out WateringCan wateringCan))
+            {
+                wateringCan.Activate();
+            }
             if (Input.GetKeyDown(KeyCode.E))
             {
                 Drop();
